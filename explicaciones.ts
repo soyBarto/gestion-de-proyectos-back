@@ -1,7 +1,7 @@
 import conectarBD from './db/db';
-import { UserModel } from './models/user';
-import { Enum_EstadoUsuario, Enum_Rol, Enum_TipoObjetivo } from './models/enums';
-import { ProjectModel } from './models/project';
+import { UserModel } from './models/usuario/usuario';
+import { Enum_EstadoUsuario, Enum_Rol, Enum_TipoObjetivo } from './models/enums/enums';
+import { ProjectModel } from './models/proyecto/proyecto';
 import { ObjectId } from 'mongoose';
 import { ObjectiveModel } from './models/objective';
 
@@ -12,8 +12,8 @@ const crearProyectoConObjetivos1 = async () => {
     apellido: 'Saldarriaga',
     correo: 'dsl@cc.com',
     identificacion: '1234',
-    rol: Enum_Rol.ADMINISTRADOR,
-    estado: Enum_EstadoUsuario.AUTORIZADO,
+    rol: Enum_Rol.administrador,
+    estado: Enum_EstadoUsuario.autorizado,
   });
 
   const proyectoCreado = await ProjectModel.create({
@@ -63,8 +63,8 @@ const crearProyectoConObjetivos2 = async () => {
     apellido: 'Saldarriaga',
     correo: 'dsl@cc.com',
     identificacion: '1234',
-    rol: Enum_Rol.ADMINISTRADOR,
-    estado: Enum_EstadoUsuario.AUTORIZADO,
+    rol: Enum_Rol.administrador,
+    estado: Enum_EstadoUsuario.autorizado,
   });
 
   const objetivoGeneral = await ObjectiveModel.create({
@@ -98,14 +98,15 @@ const consultaProyectoConObjetivos2 = async () => {
 };
 
 // METODOLOGIA ONE TO MANY #3
+
 const crearProyectoConObjetivos3 = async () => {
   const usuarioInicial = await UserModel.create({
     nombre: 'Daniel',
     apellido: 'Saldarriaga',
     correo: 'dsl@cc.com',
     identificacion: '1234',
-    rol: Enum_Rol.ADMINISTRADOR,
-    estado: Enum_EstadoUsuario.AUTORIZADO,
+    rol: Enum_Rol.administrador,
+    estado: Enum_EstadoUsuario.autorizado,
   });
 
   const proyectoCreado = await ProjectModel.create({
@@ -128,7 +129,6 @@ const consultaProyectoConObjetivos3 = async () => {
 
 const main = async () => {
   await conectarBD();
-  
 };
 
 main();
@@ -138,11 +138,10 @@ main();
 // CREAR UN USUARIO
 // await UserModel.create({
 //   apellido: 'Saldarriaga',
-//   correo: 'danpp@email.co',
-//   identificacion: 'AST456890',
-//   nombre: 'Daniel',
-//   rol: Enum_Rol.ADMINISTRADOR,
-//   estado: Enum_EstadoUsuario.AUTORIZADO,
+//   correo: 'lksk.dflcccc.com@',
+//   identificacion: '123456789',
+//   nombre: 'daniel',
+//   rol: Enum_Rol.administrador,
 // })
 //   .then((u) => {
 //     console.log('usuario creado', u);
