@@ -17,7 +17,8 @@ const resolverInscripciones = {
       return inscripcionCreada;
     },
     aprobarInscripcion: async (parent, args) => {
-      const inscripcionAprobada = await InscriptionModel.findByIdAndUpdate(args.id,
+      const inscripcionAprobada = await InscriptionModel.findByIdAndUpdate(
+        args.id,
         {
           estado: 'ACEPTADO',
           fechaIngreso: Date.now(),

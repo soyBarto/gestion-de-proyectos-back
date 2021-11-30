@@ -12,32 +12,31 @@ const { Schema, model } = mongoose;
 //   creadoPor: Schema.Types.ObjectId;
 // }
 
-const avanceSchema = new Schema(
-  {
-    fecha: {
-      type: Date,
-      required: true,
-    },
-    descripcion: {
+const avanceSchema = new Schema({
+  fecha: {
+    type: Date,
+    required: true,
+  },
+  descripcion: {
+    type: String,
+    required: true,
+  },
+  observaciones: [
+    {
       type: String,
-      required: true,
     },
-    observaciones: [
-      {
-        type: String,
-      },
-    ],
-    proyecto: {
-      type: Schema.Types.ObjectId,
-      ref: ProjectModel,
-      required: true,
-    },
-    creadoPor: {
-      type: Schema.Types.ObjectId,
-      ref: UserModel,
-      required: true,
-    },
-  });
+  ],
+  proyecto: {
+    type: Schema.Types.ObjectId,
+    ref: ProjectModel,
+    required: true,
+  },
+  creadoPor: {
+    type: Schema.Types.ObjectId,
+    ref: UserModel,
+    required: true,
+  },
+});
 
 const ModeloAvance = model('Avance', avanceSchema);
 
