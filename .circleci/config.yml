@@ -1,0 +1,28 @@
+version: 2.1
+
+orbs:
+  node: circleci/node@4.7
+  heroku: circleci/heroku@0.0.10
+
+jobs:
+  test:
+    docker:
+      - image: cimg/node:16.10
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: yarn
+      - run:
+          name: Ejecutar Tests
+          command: yarn test
+
+workflows:
+  ci_cd:
+    jobs:
+      - test
+      - heroku/deploy-via-git:
+          requires:
+            - test
+          filters:
+            branches:
+              only: main
