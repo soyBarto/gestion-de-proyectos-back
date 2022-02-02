@@ -1,9 +1,16 @@
-import { UserModel } from './usuario';
+import { UserModel } from './usuario.js';
+import bcrypt from 'bcrypt';
+import { InscriptionModel } from '../inscripcion/inscripcion.js';
 
 const resolversUsuario = {
+  Usuario: {
+    inscripciones: async (parent, args, context) => {
+      return InscriptionModel.find({ estudiante: parent._id });
+    },
+  },
   Query: {
-    Usuarios: async (parent, args) => {
-      const usuarios = await UserModel.find();
+    Usuarios: async (parent, args, context) => {
+      const usuarios = await UserModel.find({ ...args.filtro });
       return usuarios;
     },
     Usuario: async (parent, args) => {
@@ -13,12 +20,15 @@ const resolversUsuario = {
   },
   Mutation: {
     crearUsuario: async (parent, args) => {
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(args.password, salt);
       const usuarioCreado = await UserModel.create({
         nombre: args.nombre,
         apellido: args.apellido,
         identificacion: args.identificacion,
         correo: args.correo,
         rol: args.rol,
+        password: hashedPassword,
       });
 
       if (Object.keys(args).includes('estado')) {
@@ -28,15 +38,26 @@ const resolversUsuario = {
       return usuarioCreado;
     },
     editarUsuario: async (parent, args) => {
-      const usuarioEditado = await UserModel.findByIdAndUpdate(args._id, {
-        nombre: args.nombre,
-        apellido: args.apellido,
-        identificacion: args.identificacion,
-        correo: args.correo,
-        rol: args.rol,
-        estado: args.estado,
-      });
+      const usuarioEditado = await UserModel.findByIdAndUpdate(
+        args._id,
+        {
+          nombre: args.nombre,
+          apellido: args.apellido,
+          identificacion: args.identificacion,
+          correo: args.correo,
+          estado: args.estado,
+        },
+        { new: true }
+      );
 
+      return usuarioEditado;
+    },
+    editarPerfil: async (parent, args) => {
+      const usuarioEditado = await UserModel.findOneAndUpdate(
+        args._id,
+        { ...args.campos },
+        { new: true }
+      );
       return usuarioEditado;
     },
     eliminarUsuario: async (parent, args) => {
